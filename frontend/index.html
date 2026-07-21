@@ -290,7 +290,9 @@ function renderDetail(){
     h+='<button class="lk-btn'+(m.liked?' on':'')+'" onclick="toggleLikeDetail('+m.id+')" id="lkDetail">'+(m.liked?'<i class="fas fa-heart"></i> ':'<i class="far fa-heart"></i> ')+'<span id="lkCount">'+(m.like_count||0)+'</span></button>';
     if(u&&u.id===m.user_id){
       h+='<button class="btn be" onclick="renderEdit('+m.id+')"><i class="fas fa-edit"></i> 编辑</button>';
-      if(u&&u.role==='admin')h+='<button class="btn '+(m.pinned?'bp':'bs')+'" onclick="togglePin('+m.id+')">'+(m.pinned?'<i class="fas fa-thumbtack"></i> 取消置顶':'<i class="fas fa-thumbtack"></i> 置顶')+'</button>';
+    }
+    if(u&&u.role==='admin'){
+      h+='<button class="btn '+(m.pinned?'bp':'bs')+'" onclick="togglePin('+m.id+')">'+(m.pinned?'<i class="fas fa-thumbtack"></i> 取消置顶':'<i class="fas fa-thumbtack"></i> 置顶')+'</button>';
       h+='<button class="btn bs" style="color:#ef4444;border-color:rgba(239,68,68,0.3)" onclick="deleteMsg('+m.id+')"><i class="fas fa-trash"></i> 删除</button>';
     }
     h+='</div>';

@@ -212,7 +212,7 @@ app.delete('/api/messages/:id', async (req, res) => {
   try {
     const msg = db.exec('SELECT user_id FROM messages WHERE id = ?', [req.params.id]);
     if (!msg || !msg[0]) return res.json({ success: false, error: '不存在' });
-    if (msg[0].values[0][0] !== u.user.id) return res.json({ success: false, error: '无权删除' });
+    if (msg[0].values[0][0] !== u.user.id && u.user.role !== 'admin') return res.json({ success: false, error: '无权删除' });
     db.run('DELETE FROM messages WHERE id = ?', [req.params.id]);
     db.run('DELETE FROM replies WHERE message_id = ?', [req.params.id]);
     db.run('DELETE FROM likes WHERE message_id = ?', [req.params.id]);
