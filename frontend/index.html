@@ -3,63 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>心声社区 - 仙宝心灵成长</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="/assets/xianbao/xianbao-topbar.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0e1a;color:#e2e8f0;min-height:100vh;padding-top:44px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans SC','PingFang SC','Hiragino Sans GB',sans-serif;background:#0a0e1a;color:#e2e8f0;min-height:100vh;padding-top:44px;font-size:16px}
 .c{max-width:900px;margin:0 auto;padding:20px}
 .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .hdr h1{font-size:1.4rem;font-weight:600;color:#22d3ee;font-family:'Songti SC','Noto Serif SC',serif}
-.btn{display:inline-flex;align-items:center;gap:4px;padding:8px 16px;border-radius:8px;font-size:14px;cursor:pointer;border:none;transition:all .2s;text-decoration:none}
-.bp{background:linear-gradient(135deg,#22d3ee,#0ea5e9);color:#fff}
-.bp:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(34,211,238,0.3)}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:8px 16px;border-radius:8px;font-size:0.88rem;cursor:pointer;border:none;transition:all .2s;text-decoration:none}
+.btn.bp{background:linear-gradient(135deg,#22d3ee,#0ea5e9);color:#fff}
+.btn.bp:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(34,211,238,0.3)}
 .bs{background:0 0;border:1px solid rgba(148,163,184,0.3);color:#94a3b8}
 .bs:hover{border-color:#22d3ee;color:#22d3ee}
+.be{background:0 0;border:1px solid rgba(251,191,36,0.3);color:#f5a623}
+.be:hover{border-color:#f5a623;color:#f5a623}
 .tb{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-.tb button{background:0 0;border:1px solid rgba(148,163,184,0.15);color:#94a3b8;padding:6px 14px;border-radius:20px;font-size:13px;cursor:pointer;transition:all .2s}
+.tb button{background:0 0;border:1px solid rgba(148,163,184,0.15);color:#94a3b8;padding:6px 14px;border-radius:20px;font-size:0.88rem;cursor:pointer;transition:all .2s}
 .tb button.on{color:#22d3ee;border-color:#22d3ee;background:rgba(34,211,238,0.08)}
+.tb button.mine{color:#a855f7;border-color:rgba(168,85,247,0.3)}
+.tb button.mine.on{color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.08)}
 .sort{display:flex;gap:8px;margin-bottom:12px}
-.sort button{background:0 0;border:none;color:#64748b;font-size:13px;cursor:pointer;padding:4px 8px}
+.sort button{background:0 0;border:none;color:#64748b;font-size:0.88rem;cursor:pointer;padding:4px 8px}
 .sort button.on{color:#22d3ee;font-weight:600}
 .it{background:rgba(17,24,39,0.6);border:1px solid rgba(148,163,184,0.1);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;position:relative}
 .it:hover{background:rgba(30,41,59,0.6);border-color:rgba(34,211,238,0.15)}
+.it.pd{border-color:rgba(245,166,35,0.2);background:rgba(245,166,35,0.03)}
 .it .ih{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.it .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
-.it .nm{font-size:13px;font-weight:600;color:#e2e8f0}
-.it .tm{font-size:11px;color:#64748b;margin-left:auto}
-.it .tx{font-size:14px;line-height:1.6;color:#cbd5e1;margin-bottom:8px}
-.it .ib{display:flex;gap:12px;font-size:12px;color:#64748b}
-.it .tg{position:absolute;top:8px;right:12px;padding:2px 8px;border-radius:10px;font-size:11px}
+.it .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;color:#fff;flex-shrink:0;overflow:hidden}
+.it .av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.it .nm{font-size:0.88rem;font-weight:600;color:#e2e8f0}
+.it .tm{font-size:0.88rem;color:#64748b;margin-left:auto}
+.it .tx{font-size:0.88rem;line-height:1.6;color:#cbd5e1;margin-bottom:8px}
+.it .ib{display:flex;gap:12px;font-size:0.88rem;color:#64748b}
+.it .ib .lk{cursor:pointer;transition:all .2s}
+.it .ib .lk:hover{color:#ef4444}
+.it .ib .lk.on{color:#ef4444}
+.it .tg{padding:1px 6px;border-radius:8px;font-size:0.88rem;white-space:nowrap}
 .tg-q{background:rgba(34,211,238,0.1);color:#22d3ee}
 .tg-r{background:rgba(168,85,247,0.1);color:#a855f7}
 .pg{display:flex;gap:6px;justify-content:center;margin-top:20px}
-.pg a{padding:6px 12px;border:1px solid rgba(148,163,184,0.15);border-radius:6px;color:#94a3b8;font-size:13px;cursor:pointer;text-decoration:none}
+.pg a{padding:6px 12px;border:1px solid rgba(148,163,184,0.15);border-radius:6px;color:#94a3b8;font-size:0.88rem;cursor:pointer;text-decoration:none}
 .pg a.on{color:#22d3ee;border-color:#22d3ee;background:rgba(34,211,238,0.08)}
 .fg{margin-bottom:14px}
-.fg label{display:block;font-size:13px;color:#94a3b8;margin-bottom:6px}
-.fg input,.fg textarea,.fg select{width:100%;background:rgba(17,24,39,0.8);border:1px solid rgba(148,163,184,0.2);border-radius:8px;padding:10px;color:#e2e8f0;font-size:14px;min-height:80px;outline:0}
+.fg label{display:block;font-size:0.88rem;color:#94a3b8;margin-bottom:6px}
+.fg input,.fg textarea,.fg select{width:100%;background:rgba(17,24,39,0.8);border:1px solid rgba(148,163,184,0.2);border-radius:8px;padding:10px;color:#e2e8f0;font-size:0.88rem;min-height:80px;outline:0}
 .fg input:focus,.fg textarea:focus{border-color:#22d3ee}
 .fg input{min-height:auto}
-.h a{color:#22d3ee;text-decoration:none;font-size:14px}
+.h a{color:#22d3ee;text-decoration:none;font-size:0.88rem}
 .h a:hover{opacity:.8}
-.dc{font-size:15px;line-height:1.8;color:#cbd5e1;margin-bottom:16px;white-space:pre-wrap}
-.rp{margin-top:16px;padding:12px;background:rgba(17,24,39,0.4);border-radius:8px;margin-bottom:10px}
-.rp .rh{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:12px;color:#94a3b8}
+.dc{font-size:1rem;line-height:1.8;color:#cbd5e1;margin-bottom:16px;white-space:pre-wrap}
+.dt{font-size:1rem;color:#22d3ee;margin-bottom:12px;font-weight:600}
+.rp{margin-top:16px;padding:12px;background:rgba(17,24,39,0.4);border-radius:8px;margin-bottom:10px;font-size:0.88rem}
+.rp .rh{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.88rem;color:#94a3b8}
+.rp .rh .av{width:22px;height:22px}
+.rp .rh .av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .reply-input{width:100%;min-height:60px;resize:vertical}
 .cat-radio{display:none}
 .cat-radio:checked+label.cat-pill{color:#22d3ee;border-color:#22d3ee;background:rgba(34,211,238,0.1)}
-.cat-pill{display:inline-flex;align-items:center;padding:6px 14px;border-radius:20px;font-size:13px;cursor:pointer;border:1px solid rgba(148,163,184,0.2);background:rgba(17,24,39,0.6);color:#94a3b8;transition:all .2s}
+.cat-pill{display:inline-flex;align-items:center;padding:6px 14px;border-radius:20px;font-size:0.88rem;cursor:pointer;border:1px solid rgba(148,163,184,0.2);background:rgba(17,24,39,0.6);color:#94a3b8;transition:all .2s}
 .cat-pill:hover{border-color:#22d3ee}
 .mm-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center}
 .mm-box{width:700px;max-width:95vw;max-height:85vh;background:#0a0e1a;border:1px solid rgba(34,211,238,0.2);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
 .mm-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(148,163,184,0.12)}
-.mm-hdr span{color:#22d3ee;font-size:1rem;font-weight:600}
+.mm-hdr span{color:#22d3ee}
 .mm-close{background:0 0;border:none;color:#94a3b8;font-size:24px;cursor:pointer;line-height:1}
 .mm-close:hover{color:#fff}
 .mm-body{padding:16px;overflow-y:auto;flex:1}
-@media(max-width:600px){.c{padding:12px}.it{padding:12px}.mm-box{max-width:100vw;border-radius:0}}
+.edit-badge{font-size:0.88rem;color:#64748b;margin-left:6px}
+.lk-btn{display:inline-flex;align-items:center;gap:4px;cursor:pointer;transition:all .2s;font-size:0.88rem;color:#64748b;border:none;background:0 0;padding:4px 8px;border-radius:6px}
+.lk-btn:hover{color:#ef4444;background:rgba(239,68,68,0.08)}
+.lk-btn.on{color:#ef4444}
+.lk-btn.on:hover{background:rgba(239,68,68,0.12)}
+.sb{display:flex;gap:8px;margin-bottom:12px}
+.sb input{flex:1;background:rgba(17,24,39,0.8);border:1px solid rgba(148,163,184,0.2);border-radius:8px;padding:8px 12px;color:#e2e8f0;font-size:0.88rem;outline:0;transition:border-color .2s}
+.sb input:focus{border-color:#22d3ee}
+.sb input::placeholder{color:#64748b}
+.sr{display:flex;align-items:center;gap:8px;font-size:0.88rem;color:#94a3b8;margin-bottom:12px}
+.sr span{color:#22d3ee}
+.sr .cl{color:#ef4444;cursor:pointer;margin-left:8px;text-decoration:underline}
+.sr .cl:hover{color:#ff6b6b}
+.rs{display:flex;gap:8px;margin:12px 0 8px}
+.rs button{background:0 0;border:none;color:#64748b;font-size:0.88rem;cursor:pointer;padding:2px 6px}
+.rs button.on{color:#22d3ee;font-weight:600}
 </style>
 </head>
 <body>
@@ -79,42 +109,155 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 const API='/message/api';
 function $(i){return document.getElementById(i)}
 function ts(m,c){var e=$('toast');e.style.display='block';e.textContent=m;e.style.background=c==='er'?'rgba(239,68,68,0.9)':'rgba(34,211,238,0.9)';setTimeout(function(){e.style.display='none'},2000)}
-var st={p:'list',pg:1,sort:'new',cat:'all'};
+var st={p:'list',pg:1,sort:'new',cat:'all',mine:false,replySort:'asc'};
 
 async function fAPI(path){try{var r=await fetch(API+path,{credentials:'include'});return await r.json()}catch(e){return{success:false,error:e.message}}}
-
 async function postAPI(path,body){try{var r=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(body)});return await r.json()}catch(e){return{success:false,error:e.message}}}
+async function putAPI(path,body){try{var r=await fetch(API+path,{method:'PUT',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify(body)});return await r.json()}catch(e){return{success:false,error:e.message}}}
 
 function catLabel(c){return c==='question'?'问题反馈':'心得体会'}
 function catClass(c){return c==='question'?'tg-q':'tg-r'}
-function avatarHtml(name){var l=(name||'?').charAt(0).toUpperCase();return'<div class="av">'+l+'</div>'}
+function avatarHtml(name,url){
+  if(url){return'<div class="av"><img src="'+url.replace(/"/g,'&quot;')+'" alt=""></div>'}
+  var l=(name||'?').charAt(0).toUpperCase();
+  return'<div class="av">'+l+'</div>';
+}
+
+function imgToHtml(t){
+  if(!t)return'';
+  return t.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<div style="margin:8px 0"><img src="$2" alt="$1" style="max-width:100%;max-height:400px;border-radius:8px;object-fit:contain;background:rgba(0,0,0,0.3)"></div>');
+}
+
+async function uploadImg(input,cb){
+  if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();input.value='';return}
+  var f=input.files[0];
+  if(!f)return;
+  if(!f.type.match(/^image\//)){ts('请选择图片文件','er');return}
+  if(f.size>5*1024*1024){ts('图片不能超过5MB','er');return}
+  var reader=new FileReader();
+  reader.onload=async function(e){
+    var r=await postAPI('/upload',{image:e.target.result});
+    if(r.success){cb(r.url);ts('图片已上传')}
+    else if(r.error==='need_login'){ts('请先登录','er');XianbaoAuth.showLogin()}
+    else{ts('上传失败: '+r.error,'er')}
+  };
+  reader.readAsDataURL(f);
+  input.value='';
+}
+
+function searchBar(){
+  return '<div class="sb"><input id="si" placeholder="搜索标题或内容..." onkeydown="if(event.key===\'Enter\')doSearch()"><button class="btn bs" onclick="doSearch()"><i class="fas fa-search"></i></button></div>';
+}
+
+function doSearch(){
+  var q=document.getElementById('si').value.trim();
+  if(!q){ts('请输入关键词','er');return}
+  location.hash='#s:'+encodeURIComponent(q);
+}
+
+function renderSearchResults(q,pg){
+  var a=document.getElementById('app');
+  var h='<div style="max-width:900px;margin:0 auto;padding:10px 20px"><div class="hdr"><h1><a href="#list" style="color:#22d3ee;text-decoration:none">&#x58F0;&#x5FC3;&#x793E;&#x533A;</a></h1></div>';
+  h+=searchBar();
+  h+='<div class="sr">&#x641C;&#x7D22; "<span>'+q+'</span>" &#x7684;&#x7ED3;&#x679C;<a class="cl" href="#list"><i class="fas fa-times"></i> &#x6E05;&#x9664;</a><button class="btn bp" style="margin-left:auto" onclick="location.hash=\'#new\'"><i class="fas fa-pen"></i> &#x968F;&#x5FC3;&#x53D1;&#x8A00;</button></div>';
+  a.innerHTML=h+'<p style="text-align:center;color:#64748b;padding:40px">&#x641C;&#x7D22;&#x4E2D;...</p></div>';
+  fAPI('/messages/search?q='+encodeURIComponent(q)+'&page='+pg+'&limit=15').then(function(d){
+    if(!d.success){h+='<p style="text-align:center;color:#64748b;padding:40px">&#x641C;&#x7D22;&#x5931;&#x8D25;</p>';a.innerHTML=h;return}
+    var ms=d.data.messages,tp=Math.ceil(d.data.total/15)||1;
+    if(ms.length===0){
+      h+='<p style="text-align:center;color:#64748b;padding:40px">&#x6CA1;&#x6709;&#x627E;&#x5230;&#x76F8;&#x5173;&#x7ED3;&#x679C;</p>';
+    }else{
+      h+='<p style="font-size:13px;color:#94a3b8;margin-bottom:12px">&#x5171;&#x627E;&#x5230; '+d.data.total+' &#x6761;&#x7ED3;&#x679C;</p>';
+      ms.forEach(function(m){
+        var name=m.nickname||m.username||'&#x533F;&#x540D;';
+        var time=ta(m.created_at);
+        var u=(window.XianbaoAuth&&XianbaoAuth.isLoggedIn())?XianbaoAuth.getUser():null;
+        h+='<div class="it'+(m.pinned?' pd':'')+'" onclick="location.hash=\'#d:'+m.id+'\'">';
+        if(m.pinned)h+='<span style="position:absolute;top:8px;left:12px;font-size:13px">&#x1F4CC;</span>';
+        h+='<div class="ih">'+avatarHtml(name,m.avatar_url)+'<span class="nm">'+name+'</span><span class="tg '+catClass(m.category)+'">'+catLabel(m.category)+'</span><span class="tm">'+time+'</span></div>';
+        if(m.title)h+='<div style="font-size:0.88rem;color:#e2e8f0;font-weight:600;margin-bottom:4px">'+hl(m.title,q)+'</div>';
+        h+='<div class="tx">'+hl((m.content||'').substring(0,200),q)+(m.content&&m.content.length>200?'...':'')+'</div>';
+        h+='<div class="ib">';
+        h+='<span class="lk'+(m.liked?' on':'')+'" onclick="event.stopPropagation();toggleLike('+m.id+',this)">'+(m.liked?'<i class="fas fa-heart"></i> ':'<i class="far fa-heart"></i> ')+(m.like_count||0)+'</span>';
+        h+='<span><i class="far fa-comment"></i> '+(m.reply_count||0)+' &#x56DE;&#x590D;</span>';
+        if(u&&u.id===m.user_id)h+=' <span style="color:#ef4444;cursor:pointer" onclick="event.stopPropagation();deleteMsg('+m.id+')"><i class="fas fa-trash"></i></span>';
+        h+='</div></div>';
+      });
+    }
+    if(tp>1){
+      h+='<div class="pg">';
+      for(var i=1;i<=Math.min(tp,10);i++)h+='<a'+(i===pg?' class="on"':'')+' onclick="renderSearchResults(q,'+i+')">'+i+'</a>';
+      h+='</div>';
+    }
+    a.innerHTML=h;
+  }).catch(function(){a.innerHTML=h+'<p style="text-align:center;color:#64748b;padding:40px">&#x641C;&#x7D22;&#x5931;&#x8D25;</p></div>'});
+}
+
+function hl(t,q){
+  if(!t||!q)return (t||'').replace(/</g,'&lt;');
+  var text=t.replace(/</g,'&lt;');
+  var idx=text.toLowerCase().indexOf(q.toLowerCase());
+  if(idx===-1)return text;
+  return text.substring(0,idx)+'<span style="color:#f5a623;font-weight:600">'+text.substring(idx,idx+q.length)+'</span>'+text.substring(idx+q.length);
+}
+
+async function toggleLike(id,el){
+  if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
+  var r=await postAPI('/messages/'+id+'/like',{});
+  if(r.success){
+    if(el){
+      el.innerHTML=r.liked?'<i class="fas fa-heart"></i> '+r.like_count:'<i class="far fa-heart"></i> '+r.like_count;
+      if(r.liked)el.classList.add('on');else el.classList.remove('on');
+    }
+  }else if(r.error==='need_login'){ts('请先登录','er');XianbaoAuth.showLogin()}
+}
+
+function switchMine(){
+  if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
+  st.mine=!st.mine;
+  st.pg=1;
+  st.cat='all';
+  renderList();
+}
 
 function renderList(){
-  var a=$('app');
+  var a=document.getElementById('app');
   var tabs=[['all','全部'],['question','问题反馈'],['reflection','心得体会']];
-  var h='<div style="max-width:900px;margin:0 auto;padding:10px 20px"><div class="hdr"><h1>心声社区</h1><button class="btn bp" onclick="location.hash=\'#new\'"><i class="fas fa-pen"></i> 发布</button></div>';
+  var h='<div style="max-width:900px;margin:0 auto;padding:10px 20px"><div class="hdr"><h1>心声社区</h1></div>';
+  h+=searchBar();
   h+='<div class="tb">';
   tabs.forEach(function(t){
-    h+='<button class="'+(st.cat===t[0]?'on':'')+'" onclick="st.cat=\''+t[0]+'\';st.pg=1;renderList()">'+t[1]+'</button>';
+    h+='<button class="'+(st.cat===t[0]&&!st.mine?'on':'')+'" onclick="st.mine=false;st.cat=\''+t[0]+'\';st.pg=1;renderList()">'+t[1]+'</button>';
   });
+  h+='<button class="mine'+(st.mine?' on':'')+'" onclick="switchMine()"><i class="fas fa-user"></i> 我的发言</button>';
   h+='</div>';
-  h+='<div class="sort"><button class="'+(st.sort==='new'?'on':'')+'" onclick="st.sort=\'new\';renderList()">最新</button><button class="'+(st.sort==='hot'?'on':'')+'" onclick="st.sort=\'hot\';renderList()">最热</button></div>';
-  
-  fAPI('/messages?category='+st.cat+'&sort='+st.sort+'&page='+st.pg+'&limit=15').then(function(d){
-    if(!d.success){h+='<p style="text-align:center;color:#64748b;padding:40px">加载失败</p>';a.innerHTML=h;return}
+  if(!st.mine){
+    h+='<div class="sort"><button class="'+(st.sort==='new'?'on':'')+'" onclick="st.sort=\'new\';renderList()">最新</button><button class="'+(st.sort==='hot'?'on':'')+'" onclick="st.sort=\'hot\';renderList()">最热</button><button class="btn bp" style="margin-left:auto" onclick="location.hash=\'#new\'"><i class="fas fa-pen"></i> 随心发言</button></div>';
+  }
+  var url='/messages?category='+(st.mine?'':st.cat)+'&sort='+(st.mine?'new':st.sort)+'&page='+st.pg+'&limit=15'+(st.mine?'&mine=1':'');
+  fAPI(url).then(function(d){
+    if(!d.success){
+      if(d.error==='need_login'){ts('请先登录','er');if(window.XianbaoAuth)XianbaoAuth.showLogin();h+='<p style="text-align:center;color:#64748b;padding:40px">请先登录查看我的发言</p>'}
+      else{h+='<p style="text-align:center;color:#64748b;padding:40px">加载失败</p>'}
+      a.innerHTML=h;return
+    }
     var ms=d.data.messages,tp=d.data.pages||1;
     if(ms.length===0){
-      h+='<p style="text-align:center;color:#64748b;padding:40px">快来发布第一条心声吧</p>';
+      if(st.mine)h+='<p style="text-align:center;color:#64748b;padding:40px">你还没有发布过留言</p>';
+      else h+='<p style="text-align:center;color:#64748b;padding:40px">快来发布第一条心声吧</p>';
     }else{
       ms.forEach(function(m){
         var name=m.nickname||m.username||'匿名';
         var time=ta(m.created_at);
         var u=(window.XianbaoAuth&&XianbaoAuth.isLoggedIn())?XianbaoAuth.getUser():null;
-        h+='<div class="it" onclick="location.hash=\'#d:'+m.id+'\'">';
-        h+='<span class="tg '+catClass(m.category)+'">'+catLabel(m.category)+'</span>';
-        h+='<div class="ih">'+avatarHtml(name)+'<span class="nm">'+name+'</span><span class="tm">'+time+'</span></div>';
+        h+='<div class="it'+(m.pinned?' pd':'')+'" onclick="location.hash=\'#d:'+m.id+'\'">';
+        if(m.pinned)h+='<span style="position:absolute;top:8px;left:12px;font-size:0.88rem">📌</span>';
+        h+='<div class="ih">'+avatarHtml(name,m.avatar_url)+'<span class="nm">'+name+'</span><span class="tg '+catClass(m.category)+'">'+catLabel(m.category)+'</span><span class="tm">'+time+'</span></div>';
+        if(m.title)h+='<div style="font-size:0.88rem;color:#e2e8f0;font-weight:600;margin-bottom:4px">'+m.title.replace(/</g,'&lt;')+'</div>';
         h+='<div class="tx">'+(m.content||'').substring(0,200).replace(/</g,'&lt;')+(m.content&&m.content.length>200?'...':'')+'</div>';
-        h+='<div class="ib"><span><i class="far fa-comment"></i> '+(m.reply_count||0)+' 回复</span>';
+        h+='<div class="ib">';
+        h+='<span class="lk'+(m.liked?' on':'')+'" onclick="event.stopPropagation();toggleLike('+m.id+',this)">'+(m.liked?'<i class="fas fa-heart"></i> ':'<i class="far fa-heart"></i> ')+(m.like_count||0)+'</span>';
+        h+='<span><i class="far fa-comment"></i> '+(m.reply_count||0)+' 回复</span>';
         if(u&&u.id===m.user_id)h+=' <span style="color:#ef4444;cursor:pointer" onclick="event.stopPropagation();deleteMsg('+m.id+')"><i class="fas fa-trash"></i></span>';
         h+='</div></div>';
       });
@@ -131,20 +274,33 @@ function renderList(){
 }
 
 function renderDetail(){
-  var b=$('mmBody');
+  var b=document.getElementById('mmBody');
   b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">加载中...</p>';
   fAPI('/messages/'+st.cid).then(function(d){
     if(!d.success){b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">不存在或已删除</p>';return}
     var m=d.data.message,rs=d.data.replies||[];
     var name=m.nickname||m.username||'匿名';
     var time=ta(m.created_at);
-    var h='<div class="ih">'+avatarHtml(name)+'<span class="nm">'+name+'</span><span class="tm">'+time+'</span><span class="tg '+catClass(m.category)+'" style="position:static;margin-left:8px">'+catLabel(m.category)+'</span></div>';
-    h+='<div class="dc">'+(m.content||'').replace(/</g,'&lt;')+'</div>';
+    var edited=(m.updated_at&&m.updated_at!==m.created_at)?' <span class="edit-badge">· 已编辑</span>':'';
+    var u=(window.XianbaoAuth&&XianbaoAuth.isLoggedIn())?XianbaoAuth.getUser():null;
+    var h='<div class="ih">'+avatarHtml(name,m.avatar_url)+'<span class="nm">'+name+'</span><span class="tm">'+time+edited+'</span><span class="tg '+catClass(m.category)+'" style="position:static;margin-left:8px">'+catLabel(m.category)+'</span></div>';
+    if(m.title)h+='<div class="dt">'+m.title.replace(/</g,'&lt;')+'</div>';
+    h+='<div class="dc">'+imgToHtml((m.content||'').replace(/</g,'&lt;'))+'</div>';
+    h+='<div style="margin-bottom:12px;display:flex;gap:8px;align-items:center">';
+    h+='<button class="lk-btn'+(m.liked?' on':'')+'" onclick="toggleLikeDetail('+m.id+')" id="lkDetail">'+(m.liked?'<i class="fas fa-heart"></i> ':'<i class="far fa-heart"></i> ')+'<span id="lkCount">'+(m.like_count||0)+'</span></button>';
+    if(u&&u.id===m.user_id){
+      h+='<button class="btn be" onclick="renderEdit('+m.id+')"><i class="fas fa-edit"></i> 编辑</button>';
+      if(u&&u.role==='admin')h+='<button class="btn '+(m.pinned?'bp':'bs')+'" onclick="togglePin('+m.id+')">'+(m.pinned?'<i class="fas fa-thumbtack"></i> 取消置顶':'<i class="fas fa-thumbtack"></i> 置顶')+'</button>';
+      h+='<button class="btn bs" style="color:#ef4444;border-color:rgba(239,68,68,0.3)" onclick="deleteMsg('+m.id+')"><i class="fas fa-trash"></i> 删除</button>';
+    }
+    h+='</div>';
     if(rs.length>0){
       h+='<h3 style="font-size:1rem;margin:16px 0 10px;color:#94a3b8">'+rs.length+' 条回复</h3>';
-      rs.forEach(function(r){
+      h+='<div class="rs"><button class="'+(st.replySort==='asc'?'on':'')+'" onclick="st.replySort=\'asc\';renderDetail()">最早优先</button><button class="'+(st.replySort==='desc'?'on':'')+'" onclick="st.replySort=\'desc\';renderDetail()">最新优先</button></div>';
+      var sortedRs=st.replySort==='desc'?rs.slice().reverse():rs;
+      sortedRs.forEach(function(r){
         var rn=r.username||r.nickname||'匿名';
-        h+='<div class="rp"><div class="rh">'+avatarHtml(rn)+' '+rn+' · '+ta(r.created_at)+'</div><div>'+r.content.replace(/</g,'&lt;')+'</div></div>';
+        h+='<div class="rp"><div class="rh">'+avatarHtml(rn,r.avatar_url)+' '+rn+' · '+ta(r.created_at)+'</div><div>'+r.content.replace(/</g,'&lt;')+'</div></div>';
       });
     }
     h+='<div style="margin-top:16px"><textarea id="replyInput" class="fg textarea reply-input" placeholder="写下你的回复..."></textarea><button class="btn bp" style="margin-top:8px" onclick="submitReply('+m.id+')"><i class="fas fa-reply"></i> 回复</button></div>';
@@ -152,21 +308,56 @@ function renderDetail(){
   }).catch(function(){b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">加载失败</p>'});
 }
 
+async function togglePin(id){
+  if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
+  var r=await postAPI('/messages/'+id+'/pin',{});
+  if(r.success){ts(r.pinned?'已置顶':'已取消置顶','ok');renderDetail();renderList()}
+  else if(r.error==='need_login'){ts('请先登录','er');XianbaoAuth.showLogin()}
+  else{ts(r.error||'失败','er')}
+}
+
+async function toggleLikeDetail(id){
+  if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
+  var r=await postAPI('/messages/'+id+'/like',{});
+  if(r.success){
+    var btn=document.getElementById('lkDetail'),cnt=document.getElementById('lkCount');
+    if(btn&&cnt){
+      btn.innerHTML=r.liked?'<i class="fas fa-heart"></i> <span id="lkCount">'+r.like_count+'</span>':'<i class="far fa-heart"></i> <span id="lkCount">'+r.like_count+'</span>';
+      if(r.liked)btn.classList.add('on');else btn.classList.remove('on');
+    }
+  }else if(r.error==='need_login'){ts('请先登录','er');XianbaoAuth.showLogin()}
+}
+
+function renderEdit(id){
+  var b=document.getElementById('mmBody');
+  b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">加载中...</p>';
+  fAPI('/messages/'+id).then(function(d){
+    if(!d.success){b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">不存在或已删除</p>';return}
+    var m=d.data.message;
+    b.innerHTML='<div style="max-width:900px;margin:0 auto">'
+      +'<div class="fg"><label>标题（选填）</label><input id="et" value="'+(m.title||'').replace(/"/g,'&quot;')+'" placeholder="给你的留言加个标题"></div>'
+      +'<div class="fg"><label>内容</label><textarea id="eco" style="min-height:120px">'+(m.content||'').replace(/</g,'&lt;')+'</textarea>'
+      +'<div style="margin-top:6px;display:flex;gap:8px;align-items:center"><button class="btn bs" onclick="document.getElementById(\'ei\').click()"><i class="fas fa-image"></i> 添加图片</button><span style="font-size:0.88rem;color:#64748b">支持 jpg/png/gif/webp，最大5MB</span><input type="file" id="ei" accept="image/*" style="display:none" onchange="uploadImg(this,function(url){var ta=document.getElementById(\'eco\');ta.value+=\'\\n![图片](\'+url+\')\';ta.focus()})"></div></div>'
+      +'<div style="display:flex;gap:10px;margin-top:16px"><button class="btn bs" onclick="renderDetail()"><i class="fas fa-arrow-left"></i> 取消</button><button class="btn bp" onclick="submitEdit('+m.id+')"><i class="fas fa-save"></i> 保存</button></div></div>';
+  }).catch(function(){b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">加载失败</p>'});
+}
+
 function renderNew(){
-  var b=$('mmBody');
+  var b=document.getElementById('mmBody');
   b.innerHTML='<div style="max-width:900px;margin:0 auto">'
     +'<div class="fg"><label>分类</label><div style="display:flex;gap:8px">'
     +'<input type="radio" name="cat" id="rcatq" value="question" checked class="cat-radio"><label for="rcatq" class="cat-pill">问题反馈</label>'
     +'<input type="radio" name="cat" id="rcatr" value="reflection" class="cat-radio"><label for="rcatr" class="cat-pill">心得体会</label>'
     +'</div></div>'
     +'<div class="fg"><label>标题（选填）</label><input id="nt" placeholder="给你的留言加个标题"></div>'
-    +'<div class="fg"><label>内容</label><textarea id="nco" placeholder="写下你想说的..." style="min-height:120px"></textarea></div>'
+    +'<div class="fg"><label>内容</label><textarea id="nco" placeholder="写下你想说的..." style="min-height:120px"></textarea>'
+    +'<div style="margin-top:6px;display:flex;gap:8px;align-items:center"><button class="btn bs" onclick="document.getElementById(\'ni\').click()"><i class="fas fa-image"></i> 添加图片</button><span style="font-size:0.88rem;color:#64748b">支持 jpg/png/gif/webp，最大5MB</span><input type="file" id="ni" accept="image/*" style="display:none" onchange="uploadImg(this,function(url){var ta=document.getElementById(\'nco\');ta.value+=\'\\n![图片](\'+url+\')\';ta.focus()})"></div></div>'
     +'<div style="display:flex;gap:10px;margin-top:16px"><a class="btn bs" onclick="mc()"><i class="fas fa-arrow-left"></i> 返回</a><button class="btn bp" onclick="submitNew()"><i class="fas fa-paper-plane"></i> 发布</button></div></div>';
 }
 
 async function submitNew(){
   if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
-  var t=$('nt').value.trim(),c=$('nco').value.trim();
+  var t=document.getElementById('nt').value.trim(),c=document.getElementById('nco').value.trim();
   if(!c){ts('请输入内容','er');return}
   var cat=document.querySelector('input[name=cat]:checked').value;
   var r=await postAPI('/messages',{title:t,content:c,category:cat});
@@ -175,9 +366,19 @@ async function submitNew(){
   else{ts(r.error||'失败','er')}
 }
 
+async function submitEdit(id){
+  if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
+  var t=document.getElementById('et').value.trim(),c=document.getElementById('eco').value.trim();
+  if(!c){ts('请输入内容','er');return}
+  var r=await putAPI('/messages/'+id,{title:t,content:c});
+  if(r.success){ts('保存成功','ok');renderDetail();renderList()}
+  else if(r.error==='need_login'){ts('请先登录','er');XianbaoAuth.showLogin()}
+  else{ts(r.error||'失败','er')}
+}
+
 async function submitReply(id){
   if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
-  var c=$('replyInput').value.trim();
+  var c=document.getElementById('replyInput').value.trim();
   if(!c){ts('请输入内容','er');return}
   var r=await postAPI('/messages/'+id+'/reply',{content:c});
   if(r.success){ts('回复成功','ok');renderDetail();renderList()}
@@ -186,12 +387,10 @@ async function submitReply(id){
 }
 
 async function deleteMsg(id){
-  if(!confirm('确定删除？'))return;
+  if(!confirm('确定删除这条留言？删除后无法恢复。'))return;
   if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
-  var r=await fAPI('/messages/'+id);
-  // Delete via POST-like fetch
   var d=await fetch(API+'/messages/'+id,{method:'DELETE',credentials:'include'}).then(function(r){return r.json()});
-  if(d.success){ts('已删除');renderList()}
+  if(d.success){ts('已删除');renderList();mc()}
   else if(d.error==='need_login'){ts('请先登录','er');XianbaoAuth.showLogin()}
   else{ts(d.error||'失败','er')}
 }
@@ -199,11 +398,15 @@ async function deleteMsg(id){
 function ms(){document.getElementById('msgModal').style.display='flex';document.body.style.overflow='hidden'}
 function mc(){document.getElementById('msgModal').style.display='none';document.body.style.overflow='';st.p='list'}
 
+var initialLoad=true;
 function handleHash(){
   var h=location.hash;
+  if(initialLoad){initialLoad=false;mc();st.p='list';st.pg=1;renderList();return}
   if(!h||h==='#list'){mc();st.p='list';st.pg=1;renderList()}
-  else if(h.startsWith('#d:')){st.p='detail';st.cid=h.split(':')[1];renderList();$('mmTitle').textContent='详情';renderDetail();ms()}
-  else if(h==='#new'){st.p='new';renderNew();$('mmTitle').textContent='发布';ms()}
+  else if(h.startsWith('#d:')){st.p='detail';st.cid=h.split(':')[1];renderList();document.getElementById('mmTitle').textContent='详情';renderDetail();ms()}
+  else if(h.startsWith('#edit:')){st.p='edit';st.cid=h.split(':')[1];renderList();document.getElementById('mmTitle').textContent='编辑';renderEdit(st.cid);ms()}
+  else if(h.startsWith('#s:')){mc();st.p='search';var q=decodeURIComponent(h.substring(3));renderSearchResults(q,1)}
+  else if(h==='#new'){st.p='new';renderNew();document.getElementById('mmTitle').textContent='发布';ms()}
 }
 
 function ta(t){
