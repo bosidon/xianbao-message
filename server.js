@@ -78,15 +78,18 @@ app.get('/api/messages', async (req, res) => {
   const sort = req.query.sort === 'hot' ? 'm.reply_count DESC' : 'm.created_at DESC';
 
   let where = 'WHERE 1=1', params = [];
-  if (category) { where += ' AND m.category = ?'; params.push(category); }
+  const u = await getReqUser(req);
+  if (category && ['question','reflection'].includes(category)) { where += ' AND m.category = ?'; params.push(category); }
   if (mine === '1') {
-    const u = await getReqUser(req);
     if (u && u.success) { where += ' AND m.user_id = ?'; params.push(u.user.id); }
   }
 
   try {
     const total = await rdbGet('SELECT COUNT(*) as c FROM messages m ' + where, params);
     const rows = await rdbAll('SELECT m.id, m.user_id, m.username, COALESCE(u.nickname,m.nickname) AS nickname, COALESCE(u.avatar_url,m.avatar_url) AS avatar_url, m.title, m.content, m.category, m.reply_count, m.like_count, m.pinned, m.created_at, m.updated_at FROM messages m LEFT JOIN auth.users u ON m.user_id=u.id ' + where + ' ORDER BY m.pinned DESC, ' + sort + ' LIMIT ? OFFSET ?', [...params, limit, offset]);
+    const likedRows = u && u.success ? await rdbAll('SELECT message_id FROM likes WHERE user_id = ?', [u.user.id]) : [];
+    const likedMap = {}; likedRows.forEach(function(r){ likedMap[r.message_id] = true; });
+    rows.forEach(function(r){ r.liked = !!likedMap[r.id]; });
     res.json({ success: true, data: { messages: rows, total: total ? total.c : 0, page, limit } });
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
@@ -99,8 +102,12 @@ app.get('/api/messages/search', async (req, res) => {
   if (!keyword) return res.json({ success: false, error: '请输入关键词' });
 
   try {
+    const u = await getReqUser(req);
     const like = '%' + keyword + '%';    const total = await rdbGet('SELECT COUNT(*) as c FROM messages m WHERE m.title LIKE ? OR m.content LIKE ?', [like, like]);
     const rows = await rdbAll('SELECT m.id, m.user_id, m.username, COALESCE(u.nickname,m.nickname) AS nickname, COALESCE(u.avatar_url,m.avatar_url) AS avatar_url, m.title, m.content, m.category, m.reply_count, m.like_count, m.pinned, m.created_at, m.updated_at FROM messages m LEFT JOIN auth.users u ON m.user_id=u.id WHERE m.title LIKE ? OR m.content LIKE ? ORDER BY m.created_at DESC LIMIT ? OFFSET ?', [like, like, limit, offset]);
+    const likedRows = u && u.success ? await rdbAll('SELECT message_id FROM likes WHERE user_id = ?', [u.user.id]) : [];
+    const likedMap = {}; likedRows.forEach(function(r){ likedMap[r.message_id] = true; });
+    rows.forEach(function(r){ r.liked = !!likedMap[r.id]; });
     res.json({ success: true, data: { messages: rows, total: total ? total.c : 0, page, limit } });
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
