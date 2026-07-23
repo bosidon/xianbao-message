@@ -14,6 +14,8 @@ const AUTH_DB_PATH = path.join(__dirname, '..', 'auth.xianbao.online', 'database
 
 app.use(express.json({ limit: '5mb' }));
 app.use(require('cookie-parser')());
+app.use(express.static(path.join(__dirname, 'frontend'), { maxAge: 0, etag: false }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 let rdb, rdbAll, rdbRun, rdbGet;
 
