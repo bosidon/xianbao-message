@@ -4,6 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const { verifyToken, extractToken } = require('/var/www/auth-verify');
+const { promisify } = require('util');
+const sqlite3 = require('/var/www/auth.xianbao.online/node_modules/sqlite3');
+const AUTH_DB_PATH = require('path').join(__dirname, '..', 'auth.xianbao.online', 'database', 'auth.db');
+let rdb, rdbAll;
 const app = express();
 const PORT = process.env.MESSAGE_PORT || 3060;
 const initSqlJs = require('sql.js');
@@ -24,6 +28,10 @@ async function initDb() {
   // Migration: add like_count to existing tables
   try { db.run("ALTER TABLE messages ADD COLUMN like_count INTEGER DEFAULT 0"); } catch(e) {}
   try { db.run("ALTER TABLE messages ADD COLUMN pinned INTEGER DEFAULT 0"); } catch(e) {}
+  // Read-only connection with ATTACH
+  rdb = new sqlite3.Database(dbPath, sqlite3.OPEN_READONLY);
+  rdb.run("ATTACH DATABASE '" + AUTH_DB_PATH + "' AS auth");
+  rdbAll = promisify(rdb.all.bind(rdb));
   saveDb(); console.log('DB ready');
 }
 function saveDb() { const data = db.export(); fs.writeFileSync(dbPath, Buffer.from(data)); }
@@ -74,24 +82,24 @@ function getLikedMap(userId) {
 
 app.get('/api/messages', async (req, res) => {
   const category = req.query.category || '';
-  const sort = req.query.sort === 'hot' ? 'reply_count DESC' : 'created_at DESC';
+  var sort = req.query.sort === 'hot' ? 'm.reply_count DESC' : 'm.created_at DESC';
   const page = Math.max(1, parseInt(req.query.page) || 1);
   const limit = Math.min(50, parseInt(req.query.limit) || 20);
   const offset = (page - 1) * limit;
   let where = ''; const params = [];
-  if (category && ['question','reflection'].includes(category)) { where = 'WHERE category = ?'; params.push(category); }
+  if (category && ['question','reflection'].includes(category)) { where = 'WHERE m.category = ?'; params.push(category); }
   const u = await getReqUser(req);
   if (req.query.mine === '1') {
     if (!u || !u.success) return res.json({ success: false, error: 'need_login' });
-    if (where) { where += ' AND user_id = ?'; } else { where = 'WHERE user_id = ?'; }
+    if (where) { where += ' AND m.user_id = ?'; } else { where = 'WHERE m.user_id = ?'; }
     params.push(u.user.id);
   }
   try {
-    const total = db.exec('SELECT COUNT(*) as c FROM messages ' + where, params)[0];
-    const rows = db.exec('SELECT id, user_id, username, nickname, avatar_url, title, content, category, reply_count, like_count, pinned, created_at, updated_at FROM messages ' + where + ' ORDER BY pinned DESC, ' + sort + ' LIMIT ? OFFSET ?', params.concat([limit, offset]));
+    var total = (await rdbAll('SELECT COUNT(*) as c FROM messages m LEFT JOIN auth.users u ON m.user_id=u.id ' + where, params))[0]?.c || 0;
+    const rows = await rdbAll('SELECT m.id, m.user_id, m.username, COALESCE(u.nickname,m.nickname) AS nickname, COALESCE(u.avatar_url,m.avatar_url) AS avatar_url, m.title, m.content, m.category, m.reply_count, m.like_count, m.pinned, m.created_at, m.updated_at FROM messages m LEFT JOIN auth.users u ON m.user_id=u.id ' + where + ' ORDER BY pinned DESC, ' + sort + ' LIMIT ? OFFSET ?', params.concat([limit, offset]));
     const likedMap = u && u.success ? getLikedMap(u.user.id) : {};
-    const messages = rows && rows[0] ? rows[0].values.map(r => ({ id: r[0], user_id: r[1], username: r[2], nickname: r[3], avatar_url: r[4], title: r[5], content: (r[6]||'').substring(0,200), category: r[7], reply_count: r[8], like_count: r[9]||0, pinned: r[10]||0, created_at: r[11], updated_at: r[12], liked: !!likedMap[r[0]] })) : [];
-    res.json({ success: true, data: { messages, total: total ? total.values[0][0] : 0, page, limit } });
+    const messages = rows.map(r => ({ id: r.id, user_id: r.user_id, username: r.username, nickname: r.nickname, avatar_url: r.avatar_url, title: r.title, content: (r.content||'').substring(0,200), category: r.category, reply_count: r.reply_count, like_count: r.like_count||0, pinned: r.pinned||0, created_at: r.created_at, updated_at: r.updated_at, liked: !!likedMap[r.id] }));
+    res.json({ success: true, data: { messages, total, page, limit } });
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
 
@@ -103,12 +111,12 @@ app.get('/api/messages/search', async (req, res) => {
   const offset = (page - 1) * limit;
   try {
     const like = '%' + q.replace(/%/g,'%%') + '%';
-    const total = db.exec('SELECT COUNT(*) as c FROM messages WHERE title LIKE ? OR content LIKE ?', [like, like])[0];
-    const rows = db.exec('SELECT id, user_id, username, nickname, avatar_url, title, content, category, reply_count, like_count, pinned, created_at, updated_at FROM messages WHERE title LIKE ? OR content LIKE ? ORDER BY pinned DESC, created_at DESC LIMIT ? OFFSET ?', [like, like, limit, offset]);
+    var total = (await rdbAll('SELECT COUNT(*) as c FROM messages WHERE title LIKE ? OR content LIKE ?', [like, like]))[0]?.c || 0;
+    const rows = await rdbAll('SELECT m.id, m.user_id, m.username, COALESCE(u.nickname,m.nickname) AS nickname, COALESCE(u.avatar_url,m.avatar_url) AS avatar_url, m.title, m.content, m.category, m.reply_count, m.like_count, m.pinned, m.created_at, m.updated_at FROM messages m LEFT JOIN auth.users u ON m.user_id=u.id WHERE m.title LIKE ? OR m.content LIKE ? ORDER BY pinned DESC, m.created_at DESC LIMIT ? OFFSET ?', [like, like, limit, offset]);
     const u = getReqUser(req);
     const likedMap = u && u.success ? getLikedMap(u.user.id) : {};
-    const messages = rows && rows[0] ? rows[0].values.map(r => ({ id: r[0], user_id: r[1], username: r[2], nickname: r[3], avatar_url: r[4], title: r[5], content: (r[6]||'').substring(0,200), category: r[7], reply_count: r[8], like_count: r[9]||0, pinned: r[10]||0, created_at: r[11], updated_at: r[12], liked: !!likedMap[r[0]] })) : [];
-    res.json({ success: true, data: { messages, total: total ? total.values[0][0] : 0, page, limit, query: q } });
+    const messages = rows.map(r => ({ id: r.id, user_id: r.user_id, username: r.username, nickname: r.nickname, avatar_url: r.avatar_url, title: r.title, content: (r.content||'').substring(0,200), category: r.category, reply_count: r.reply_count, like_count: r.like_count||0, pinned: r.pinned||0, created_at: r.created_at, updated_at: r.updated_at, liked: !!likedMap[r.id] }));
+    res.json({ success: true, data: { messages, total, page, limit, query: q } });
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
 
@@ -125,20 +133,20 @@ app.post('/api/messages', async (req, res) => {
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
 
-app.get('/api/messages/:id', (req, res) => {
+app.get('/api/messages/:id', async (req, res) => {
   try {
-    const msg = db.exec('SELECT id, user_id, username, nickname, avatar_url, title, content, category, reply_count, like_count, pinned, created_at, updated_at FROM messages WHERE id = ?', [req.params.id]);
-    if (!msg || !msg[0]) return res.json({ success: false, error: '不存在' });
-    const m = msg[0].values[0];
+    var msgRows = await rdbAll('SELECT m.id, m.user_id, m.username, COALESCE(u.nickname,m.nickname) AS nickname, COALESCE(u.avatar_url,m.avatar_url) AS avatar_url, m.title, m.content, m.category, m.reply_count, m.like_count, m.pinned, m.created_at, m.updated_at FROM messages m LEFT JOIN auth.users u ON m.user_id=u.id WHERE m.id = ?', [req.params.id]);
+    if (!msgRows || msgRows.length === 0) return res.json({ success: false, error: '不存在' });
+    const m = msgRows[0];
     const u = getReqUser(req);
     let liked = false;
     if (u && u.success) {
       const r = db.exec('SELECT COUNT(*) as c FROM likes WHERE message_id = ? AND user_id = ?', [req.params.id, u.user.id]);
       liked = r && r[0] && r[0].values[0][0] > 0;
     }
-    const message = { id: m[0], user_id: m[1], username: m[2], nickname: m[3], avatar_url: m[4], title: m[5], content: m[6], category: m[7], reply_count: m[8], like_count: m[9]||0, pinned: m[10]||0, created_at: m[11], updated_at: m[12], liked };
-    const reps = db.exec('SELECT id, user_id, username, nickname, avatar_url, parent_id, content, created_at FROM replies WHERE message_id = ? ORDER BY created_at ASC', [req.params.id]);
-    const replies = reps && reps[0] ? reps[0].values.map(r => ({ id: r[0], user_id: r[1], username: r[2], nickname: r[3], avatar_url: r[4], parent_id: r[5], content: r[6], created_at: r[7] })) : [];
+    const message = { id: m.id, user_id: m.user_id, username: m.username, nickname: m.nickname, avatar_url: m.avatar_url, title: m.title, content: m.content, category: m.category, reply_count: m.reply_count, like_count: m.like_count||0, pinned: m.pinned||0, created_at: m.created_at, updated_at: m.updated_at, liked };
+    const reps = await rdbAll('SELECT r.id, r.user_id, r.username, COALESCE(u.nickname,r.nickname) AS nickname, COALESCE(u.avatar_url,r.avatar_url) AS avatar_url, r.parent_id, r.content, r.created_at FROM replies r LEFT JOIN auth.users u ON r.user_id=u.id WHERE r.message_id = ? ORDER BY r.created_at ASC', [req.params.id]);
+    const replies = reps.map(r => ({ id: r.id, user_id: r.user_id, username: r.username, nickname: r.nickname, avatar_url: r.avatar_url, parent_id: r.parent_id, content: r.content, created_at: r.created_at }));
     res.json({ success: true, data: { message, replies } });
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
