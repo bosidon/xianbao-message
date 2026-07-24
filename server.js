@@ -90,7 +90,8 @@ app.get('/api/messages', async (req, res) => {
     const likedRows = u && u.success ? await rdbAll('SELECT message_id FROM likes WHERE user_id = ?', [u.user.id]) : [];
     const likedMap = {}; likedRows.forEach(function(r){ likedMap[r.message_id] = true; });
     rows.forEach(function(r){ r.liked = !!likedMap[r.id]; });
-    res.json({ success: true, data: { messages: rows, total: total ? total.c : 0, page, limit } });
+    var totalCount = total ? total.c : 0;
+    res.json({ success: true, data: { messages: rows, total: totalCount, pages: Math.ceil(totalCount / limit), page, limit } });
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
 
@@ -108,7 +109,8 @@ app.get('/api/messages/search', async (req, res) => {
     const likedRows = u && u.success ? await rdbAll('SELECT message_id FROM likes WHERE user_id = ?', [u.user.id]) : [];
     const likedMap = {}; likedRows.forEach(function(r){ likedMap[r.message_id] = true; });
     rows.forEach(function(r){ r.liked = !!likedMap[r.id]; });
-    res.json({ success: true, data: { messages: rows, total: total ? total.c : 0, page, limit } });
+    var totalCount = total ? total.c : 0;
+    res.json({ success: true, data: { messages: rows, total: totalCount, pages: Math.ceil(totalCount / limit), page, limit } });
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
 
