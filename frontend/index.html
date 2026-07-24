@@ -277,39 +277,78 @@ function renderDetail(){
   var b=document.getElementById('mmBody');
   b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">加载中...</p>';
   fAPI('/messages/'+st.cid).then(function(d){
-    if(!d.success){b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">不存在或已删除</p>';return}
-    var m=d.data.message,rs=d.data.replies||[];
-    var name=m.nickname||m.username||'匿名';
-    var time=ta(m.created_at);
-    var edited=(m.updated_at&&m.updated_at!==m.created_at)?' <span class="edit-badge">· 已编辑</span>':'';
-    var u=(window.XianbaoAuth&&XianbaoAuth.isLoggedIn())?XianbaoAuth.getUser():null;
-    var h='<div class="ih">'+avatarHtml(name,m.avatar_url)+'<span class="nm">'+name+'</span><span class="tm">'+time+edited+'</span><span class="tg '+catClass(m.category)+'" style="position:static;margin-left:8px">'+catLabel(m.category)+'</span></div>';
-    if(m.title)h+='<div class="dt">'+m.title.replace(/</g,'&lt;')+'</div>';
-    h+='<div class="dc">'+imgToHtml((m.content||'').replace(/</g,'&lt;'))+'</div>';
-    h+='<div style="margin-bottom:12px;display:flex;gap:8px;align-items:center">';
-    h+='<button class="lk-btn'+(m.liked?' on':'')+'" onclick="toggleLikeDetail('+m.id+')" id="lkDetail">'+(m.liked?'<i class="fas fa-heart"></i> ':'<i class="far fa-heart"></i> ')+'<span id="lkCount">'+(m.like_count||0)+'</span></button>';
-    if(u&&u.id===m.user_id){
-      h+='<button class="btn be" onclick="renderEdit('+m.id+')"><i class="fas fa-edit"></i> 编辑</button>';
-    }
-    if(u&&u.role==='admin'){
-      h+='<button class="btn '+(m.pinned?'bp':'bs')+'" onclick="togglePin('+m.id+')">'+(m.pinned?'<i class="fas fa-thumbtack"></i> 取消置顶':'<i class="fas fa-thumbtack"></i> 置顶')+'</button>';
-      h+='<button class="btn bs" style="color:#ef4444;border-color:rgba(239,68,68,0.3)" onclick="deleteMsg('+m.id+')"><i class="fas fa-trash"></i> 删除</button>';
-    }
-    h+='</div>';
-    if(rs.length>0){
-      h+='<h3 style="font-size:1rem;margin:16px 0 10px;color:#94a3b8">'+rs.length+' 条回复</h3>';
-      h+='<div class="rs"><button class="'+(st.replySort==='asc'?'on':'')+'" onclick="st.replySort=\'asc\';renderDetail()">最早优先</button><button class="'+(st.replySort==='desc'?'on':'')+'" onclick="st.replySort=\'desc\';renderDetail()">最新优先</button></div>';
-      var sortedRs=st.replySort==='desc'?rs.slice().reverse():rs;
-      sortedRs.forEach(function(r){
-        var rn=r.username||r.nickname||'匿名';
-        h+='<div class="rp"><div class="rh">'+avatarHtml(rn,r.avatar_url)+' '+rn+' · '+ta(r.created_at)+'</div><div>'+r.content.replace(/</g,'&lt;')+'</div></div>';
-      });
-    }
-    h+='<div style="margin-top:16px"><textarea id="replyInput" class="fg textarea reply-input" placeholder="写下你的回复..."></textarea><button class="btn bp" style="margin-top:8px" onclick="submitReply('+m.id+')"><i class="fas fa-reply"></i> 回复</button></div>';
-    b.innerHTML=h;
-  }).catch(function(){b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">加载失败</p>'});
+    try{
+      if(!d||!d.success||!d.data||!d.data.message){b.innerHTML='<p style="text-align:center;padding:40px;color:#64748b">不存在或已删除</p>';return}
+      var m=d.data.message,rs=d.data.replies||[];
+      var name=m.nickname||m.username||'匿名';
+      var time=ta(m.created_at);
+      var edited=(m.updated_at&&m.updated_at!==m.created_at)?' · 已编辑':'';
+      var u=(window.XianbaoAuth&&XianbaoAuth.isLoggedIn())?XianbaoAuth.getUser():null;
+      b.innerHTML='';
+      var ih=document.createElement('div');ih.className='ih';
+      ih.innerHTML=avatarHtml(name,m.avatar_url);
+      var nm=document.createElement('span');nm.className='nm';nm.textContent=name;ih.appendChild(nm);
+      var tm=document.createElement('span');tm.className='tm';tm.textContent=time+edited;ih.appendChild(tm);
+      var tg=document.createElement('span');tg.className='tg '+catClass(m.category);tg.style.cssText='position:static;margin-left:8px';tg.textContent=catLabel(m.category);ih.appendChild(tg);
+      b.appendChild(ih);
+      if(m.title){var dt=document.createElement('div');dt.className='dt';dt.textContent=m.title;b.appendChild(dt);}
+      var dc=document.createElement('div');dc.className='dc';dc.textContent=m.content||'';b.appendChild(dc);
+      var bb=document.createElement('div');bb.style.cssText='margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap';
+      var lk=document.createElement('button');lk.className='lk-btn'+(m.liked?' on':'');lk.id='lkDetail';
+      lk.innerHTML=(m.liked?'<i class="fas fa-heart"></i> ':'<i class="far fa-heart"></i> ')+'<span id="lkCount">'+(m.like_count||0)+'</span>';
+      lk.onclick=function(){toggleLikeDetail(m.id);};
+      bb.appendChild(lk);
+      if(u&&u.id===m.user_id){
+        var ed=document.createElement('button');ed.className='btn be';ed.innerHTML='<i class="fas fa-edit"></i> 编辑';
+        ed.onclick=function(){renderEdit(m.id);};
+        bb.appendChild(ed);
+      }
+      if(u&&u.role==='admin'){
+        var pin=document.createElement('button');pin.className='btn '+(m.pinned?'bp':'bs');
+        pin.innerHTML=m.pinned?'<i class="fas fa-thumbtack"></i> 取消置顶':'<i class="fas fa-thumbtack"></i> 置顶';
+        pin.onclick=function(){togglePin(m.id);};
+        bb.appendChild(pin);
+        var del=document.createElement('button');del.className='btn bs';del.style.cssText='color:#ef4444;border-color:rgba(239,68,68,0.3)';
+        del.innerHTML='<i class="fas fa-trash"></i> 删除';
+        del.onclick=function(){deleteMsg(m.id);};
+        bb.appendChild(del);
+      }
+      b.appendChild(bb);
+      if(rs.length>0){
+        var rh3=document.createElement('h3');rh3.style.cssText='font-size:1rem;margin:16px 0 10px;color:#94a3b8';
+        rh3.textContent=rs.length+' 条回复';
+        b.appendChild(rh3);
+        var rsBar=document.createElement('div');rsBar.className='rs';
+        var ascBtn=document.createElement('button');ascBtn.className=st.replySort==='asc'?'on':'';ascBtn.textContent='最早优先';
+        ascBtn.onclick=function(){st.replySort='asc';renderDetail();};
+        rsBar.appendChild(ascBtn);
+        var descBtn=document.createElement('button');descBtn.className=st.replySort==='desc'?'on':'';descBtn.textContent='最新优先';
+        descBtn.onclick=function(){st.replySort='desc';renderDetail();};
+        rsBar.appendChild(descBtn);
+        b.appendChild(rsBar);
+        var sortedRs=st.replySort==='desc'?rs.slice().reverse():rs;
+        sortedRs.forEach(function(r){
+          var rn=r.nickname||r.username||'匿名';
+          var rp=document.createElement('div');rp.className='rp';
+          var rh=document.createElement('div');rh.className='rh';
+          rh.innerHTML=avatarHtml(rn,r.avatar_url)+' '+rn+' <span class="tm">'+ta(r.created_at)+'</span>';
+          rp.appendChild(rh);
+          var rc=document.createElement('div');rc.className='rc';rc.textContent=r.content||'';
+          rp.appendChild(rc);
+          b.appendChild(rp);
+        });
+      }
+      var replyBox=document.createElement('div');replyBox.style.cssText='margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)';
+      var tarea=document.createElement('textarea');tarea.id='replyInput';tarea.className='fg textarea reply-input';tarea.placeholder='写下你的回复...';
+      replyBox.appendChild(tarea);
+      var rpBtn=document.createElement('button');rpBtn.className='btn bp';rpBtn.style.marginTop='8px';
+      rpBtn.innerHTML='<i class="fas fa-reply"></i> 回复';
+      rpBtn.onclick=function(){doReply(m.id);};
+      replyBox.appendChild(rpBtn);
+      b.appendChild(replyBox);
+    }catch(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);}
+  }).catch(function(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);});
 }
-
 async function togglePin(id){
   if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
   var r=await postAPI('/messages/'+id+'/pin',{});
