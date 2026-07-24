@@ -403,7 +403,7 @@ function mc(){document.getElementById('msgModal').style.display='none';document.
 var initialLoad=true;
 function handleHash(){
   var h=location.hash;
-  if(initialLoad){initialLoad=false;mc();st.p='list';st.pg=1;renderList();return}
+  if(initialLoad){initialLoad=false;mc();st.p='list';st.pg=1;if(!h||h==='#list'){renderList()}else{handleHash();}return}
   if(!h||h==='#list'){mc();st.p='list';st.pg=1;renderList()}
   else if(h.startsWith('#d:')){st.p='detail';st.cid=h.split(':')[1];renderList();document.getElementById('mmTitle').textContent='详情';renderDetail();ms()}
   else if(h.startsWith('#edit:')){st.p='edit';st.cid=h.split(':')[1];renderList();document.getElementById('mmTitle').textContent='编辑';renderEdit(st.cid);ms()}
