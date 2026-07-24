@@ -61,7 +61,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans SC','PingFang SC','
 .rp{margin-top:16px;padding:12px;background:rgba(17,24,39,0.4);border-radius:8px;margin-bottom:10px;font-size:0.88rem}
 .rp .rh{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:0.88rem;color:#94a3b8}
 .rp .rh .av{width:22px;height:22px}
-.rp .rh .av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.rp .rh .av img{width:100%;height:100%;object-fit:cover;border-radius:50%}.mm-body .av{width:40px;height:40px}.mm-body .av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .reply-input{width:100%;min-height:60px;resize:vertical}
 .cat-radio{display:none}
 .cat-radio:checked+label.cat-pill{color:#22d3ee;border-color:#22d3ee;background:rgba(34,211,238,0.1)}
@@ -345,9 +345,9 @@ function renderDetail(){
       rpBtn.innerHTML='<i class="fas fa-reply"></i> 回复';
       rpBtn.onclick=function(){doReply(m.id);};
       replyBox.appendChild(rpBtn);
-      b.appendChild(replyBox);
+      b.appendChild(replyBox);var m=document.getElementById('msgModal');if(m)m.style.display='flex';
     }catch(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);}
-  }).catch(function(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);});
+  }).catch(function(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);});setTimeout(function(){var m=document.getElementById('msgModal');if(m&&m.style.display!=='flex'){console.log('FORCE show modal');m.style.display='flex';m.style.alignItems='center';m.style.justifyContent='center';}},2000);
 }
 async function togglePin(id){
   if(!window.XianbaoAuth||!XianbaoAuth.isLoggedIn()){ts('请先登录','er');XianbaoAuth.showLogin();return}
@@ -444,7 +444,7 @@ function handleHash(){
   var h=location.hash;
   if(initialLoad){initialLoad=false;mc();st.p='list';st.pg=1;if(!h||h==='#list'){renderList()}else{handleHash();}return}
   if(!h||h==='#list'){mc();st.p='list';st.pg=1;renderList()}
-  else if(h.startsWith('#d:')){st.p='detail';st.cid=h.split(':')[1];renderList();document.getElementById('mmTitle').textContent='详情';renderDetail();ms()}
+  else if(h.startsWith('#d:')){st.p='detail';st.cid=h.split(':')[1];renderList();document.getElementById('mmTitle').textContent='详情';renderDetail()}
   else if(h.startsWith('#edit:')){st.p='edit';st.cid=h.split(':')[1];renderList();document.getElementById('mmTitle').textContent='编辑';renderEdit(st.cid);ms()}
   else if(h.startsWith('#s:')){mc();st.p='search';var q=decodeURIComponent(h.substring(3));renderSearchResults(q,1)}
   else if(h==='#new'){st.p='new';renderNew();document.getElementById('mmTitle').textContent='发布';ms()}
