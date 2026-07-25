@@ -345,7 +345,7 @@ function renderDetail(){
       rpBtn.innerHTML='<i class="fas fa-reply"></i> 回复';
       rpBtn.onclick=function(){doReply(m.id);};
       replyBox.appendChild(rpBtn);
-      b.appendChild(replyBox);var m=document.getElementById('msgModal');if(m)m.style.display='flex';
+      b.appendChild(replyBox);var mm=document.getElementById('msgModal');if(mm)mm.style.display='flex';
     }catch(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);}
   }).catch(function(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);});setTimeout(function(){var m=document.getElementById('msgModal');if(m&&m.style.display!=='flex'){console.log('FORCE show modal');m.style.display='flex';m.style.alignItems='center';m.style.justifyContent='center';}},2000);
 }

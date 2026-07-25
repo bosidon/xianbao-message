@@ -173,6 +173,20 @@ app.post('/api/messages/:id/pin', async (req, res) => {
   } catch(e) { res.json({ success: false, error: e.message }); }
 });
 
+
+app.put('/api/messages/:id', async (req, res) => {
+  const u = await getReqUser(req);
+  if (!u || !u.success) return res.json({ success: false, error: 'need_login' });
+  try {
+    const msg = await rdbGet('SELECT user_id FROM messages WHERE id = ?', [req.params.id]);
+    if (!msg) return res.json({ success: false, error: '不存在' });
+    if (msg.user_id !== u.user.id && u.user.role !== 'admin') return res.json({ success: false, error: '无权编辑' });
+    const { title, content } = req.body;
+    if (!content) return res.json({ success: false, error: '内容不能为空' });
+    await rdbRun("UPDATE messages SET title=?, content=?, updated_at=CURRENT_TIMESTAMP WHERE id=?", [title||'', content, req.params.id]);
+    res.json({ success: true });
+  } catch(e) { res.json({ success: false, error: e.message }); }
+});
 app.delete('/api/messages/:id', async (req, res) => {
   const u = await getReqUser(req);
   if (!u || !u.success) return res.json({ success: false, error: 'need_login' });
