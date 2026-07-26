@@ -343,7 +343,7 @@ function renderDetail(){
       replyBox.appendChild(tarea);
       var rpBtn=document.createElement('button');rpBtn.className='btn bp';rpBtn.style.marginTop='8px';
       rpBtn.innerHTML='<i class="fas fa-reply"></i> 回复';
-      rpBtn.onclick=function(){doReply(m.id);};
+      rpBtn.onclick=function(){submitReply(m.id);};
       replyBox.appendChild(rpBtn);
       b.appendChild(replyBox);var mm=document.getElementById('msgModal');if(mm)mm.style.display='flex';
     }catch(e){b.innerHTML='<p style="text-align:center;padding:40px;color:#f87171">加载失败: '+e.message+'</p>';console.error(e);}
