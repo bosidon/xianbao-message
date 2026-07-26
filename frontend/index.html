@@ -340,7 +340,17 @@ function renderDetail(){
       }
       var replyBox=document.createElement('div');replyBox.style.cssText='margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06)';
       var tarea=document.createElement('textarea');tarea.id='replyInput';tarea.className='fg textarea reply-input';tarea.placeholder='写下你的回复...';
-      var eb=document.createElement('div');eb.style.cssText='display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 4px';'😊😂🤣❤️🔥👍🙏💪😍🎉✨🥺😅🤔🙄'.split('').forEach(function(e){var sp=document.createElement('span');sp.textContent=e;sp.style.cssText='cursor:pointer;font-size:20px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px';sp.onmouseover=function(){sp.style.background='rgba(255,255,255,0.08)'};sp.onmouseout=function(){sp.style.background=''};sp.onclick=function(){var inp=document.getElementById('replyInput');var s=inp.selectionStart;var v=inp.value;inp.value=v.slice(0,s)+e+v.slice(s);inp.focus();inp.selectionStart=inp.selectionEnd=s+e.length};eb.appendChild(sp);});replyBox.appendChild(tarea);replyBox.insertBefore(eb, tarea);
+      var eb=document.createElement('div');eb.style.cssText='display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 4px';
+var emojis=['😊','😂','🤣','❤️','🔥','👍','🙏','💪','😍','🎉','✨','🥺','😅','🤔','🙄'];
+emojis.forEach(function(e){
+  var sp=document.createElement('span');sp.textContent=e;
+  sp.style.cssText='cursor:pointer;font-size:20px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px';
+  sp.onmouseover=function(){sp.style.background='rgba(255,255,255,0.08)'};
+  sp.onmouseout=function(){sp.style.background=''};
+  sp.onclick=function(){var inp=document.getElementById('replyInput');var s=inp.selectionStart;var v=inp.value;inp.value=v.slice(0,s)+e+v.slice(s);inp.focus();inp.selectionStart=inp.selectionEnd=s+e.length};
+  eb.appendChild(sp);
+});
+replyBox.appendChild(tarea);replyBox.insertBefore(eb, tarea);
       var rpBtn=document.createElement('button');rpBtn.className='btn bp';rpBtn.style.marginTop='8px';
       rpBtn.innerHTML='<i class="fas fa-reply"></i> 回复';
       rpBtn.onclick=function(){submitReply(m.id);};
