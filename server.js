@@ -65,7 +65,7 @@ app.post('/api/messages', async (req, res) => {
   if (content.length > 2000) return res.json({ success: false, error: '内容太长，最多2000字' });
   try {
     const result = await rdbRun('INSERT INTO messages (user_id, username, nickname, avatar_url, title, content, category) VALUES (?,?,?,?,?,?,?)',
-      [user.id, user.username||'', user.nickname||user.username||'', user.avatar_url||'', title, content, category||'question']);
+      [user.id, user.nickname||'', user.nickname||'', user.avatar_url||'', title, content, category||'question']);
     const lastRow = await rdbGet('SELECT last_insert_rowid() as id');
     res.json({ success: true, id: lastRow ? lastRow.id : null });
   } catch(e) { res.json({ success: false, error: e.message }); }
@@ -139,7 +139,7 @@ app.post('/api/messages/:id/reply', async (req, res) => {
   if (content.length > 1000) return res.json({ success: false, error: '回复太长，最多1000字' });
   try {
     await rdbRun('INSERT INTO replies (message_id, user_id, username, nickname, avatar_url, parent_id, content) VALUES (?,?,?,?,?,?,?)',
-      [req.params.id, user.id, user.username||'', user.nickname||user.username||'', user.avatar_url||'', null, content]);
+      [req.params.id, user.id, user.nickname||'', user.nickname||'', user.avatar_url||'', null, content]);
     await rdbRun('UPDATE messages SET reply_count = reply_count + 1 WHERE id = ?', [req.params.id]);
     res.json({ success: true });
   } catch(e) { res.json({ success: false, error: e.message }); }
